@@ -12,10 +12,12 @@ export default function Profile() {
   const { user, userData } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  
   const [formData, setFormData] = useState({
     name: userData?.name || '',
     college: userData?.college || '',
-    track: userData?.track || 'Software Engineering'
+    track: userData?.track || 'Software Engineering',
+    avatarUrl: userData?.avatarUrl || ''
   });
 
   if (!userData) {
@@ -35,13 +37,11 @@ export default function Profile() {
         name: formData.name,
         college: formData.college,
         track: formData.track,
+        avatarUrl: formData.avatarUrl,
       });
-      // Updating local userData state is handled automatically if we had an onSnapshot, 
-      // but since we only getDoc on load, we rely on the context updating or a page refresh.
-      // For this hackathon scope, this is fine, or we can force reload:
+      
       toast.success('Profile updated successfully!');
       setIsEditing(false);
-      // Optional: window.location.reload(); to fetch fresh data if state doesn't sync
     } catch (err) {
       console.error(err);
       toast.error('Failed to update profile');
@@ -49,6 +49,8 @@ export default function Profile() {
       setLoading(false);
     }
   };
+
+  const displayAvatar = formData.avatarUrl || user.photoURL || `https://ui-avatars.com/api/?name=${user.email}`;
 
   return (
     <div className="profile page">
@@ -59,11 +61,7 @@ export default function Profile() {
       <div className="container fade-in" style={{ paddingBottom: '100px' }}>
         <section className="profile__header glass-card glass-card--static slide-up">
           <div className="profile__avatar-container">
-            <img 
-              src={user.photoURL || `https://ui-avatars.com/api/?name=${user.email}`} 
-              alt="Avatar" 
-              className="profile__avatar"
-            />
+            <img src={displayAvatar} alt="Avatar" className="profile__avatar" style={{ objectFit: 'cover' }} />
           </div>
           <h1 className="profile__name">{userData.name}</h1>
           <p className="profile__email">{user.email}</p>
@@ -96,6 +94,7 @@ export default function Profile() {
           </div>
 
           <form onSubmit={handleSubmit} className="glass-card glass-card--static">
+            
             <div className="profile__field">
               <label>
                 <User size={16} /> Display Name
@@ -108,6 +107,21 @@ export default function Profile() {
                 disabled={!isEditing}
                 className={`profile__input ${!isEditing ? 'profile__input--disabled' : ''}`}
                 required
+              />
+            </div>
+
+            <div className="profile__field">
+              <label>
+                <User size={16} /> Avatar Image URL
+              </label>
+              <input 
+                type="url" 
+                name="avatarUrl" 
+                value={formData.avatarUrl} 
+                onChange={handleChange}
+                disabled={!isEditing}
+                className={`profile__input ${!isEditing ? 'profile__input--disabled' : ''}`}
+                placeholder="https://example.com/photo.jpg"
               />
             </div>
 

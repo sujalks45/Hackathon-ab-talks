@@ -137,28 +137,36 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Achievements */}
-        <section className="dashboard__section slide-up stagger-4">
+        {/* Achievements Section */}
+        <section className="dashboard__section glass-card glass-card--static slide-up stagger-3">
           <div className="dashboard__section-header">
-            <h2 className="dashboard__section-title">
-              <Award size={18} /> Achievements
-            </h2>
-            <span className="dashboard__section-count">{earnedAchievements.length}/{student.achievements?.length || 0}</span>
+            <h2>Your Badges</h2>
+            <Link to="/profile" className="dashboard__section-link">View All</Link>
           </div>
-          {(!student.achievements || student.achievements.length === 0) ? (
-            <div className="glass-card glass-card--static" style={{ padding: 'var(--space-6)', textAlign: 'center' }}>
-              <Sparkles size={32} color="var(--color-text-muted)" style={{ margin: '0 auto var(--space-3)' }} />
-              <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--text-sm)' }}>
-                Complete your first 3 days to unlock your first badge!
-              </p>
-            </div>
-          ) : (
-            <div className="dashboard__achievements">
-              {student.achievements.map((a) => (
+          
+          <div className="dashboard__achievements">
+            {(() => {
+              const defaultBadges = [
+                { id: 'first-commit', title: 'First Commit', emoji: '🚀', description: 'Submit your first proof of work', earned: false },
+                { id: 'streak-3', title: '3-Day Streak', emoji: '🔥', description: 'Maintain a 3-day streak', earned: false },
+                { id: 'streak-7', title: 'Week Warrior', emoji: '⚔️', description: 'Maintain a 7-day streak. Earn a Streak Shield!', earned: false },
+                { id: 'streak-14', title: 'Two-Week Titan', emoji: '🏆', description: 'Maintain a 14-day streak', earned: false },
+                { id: 'halfway', title: 'Halfway Hero', emoji: '🎯', description: 'Complete 30 days of the challenge', earned: false },
+                { id: 'finisher', title: 'Challenge Champion', emoji: '👑', description: 'Complete all 60 days!', earned: false }
+              ];
+              
+              const userBadges = userData.achievements || [];
+              
+              const mergedBadges = defaultBadges.map(defaultBadge => {
+                const earnedBadge = userBadges.find(b => b.id === defaultBadge.id);
+                return earnedBadge || defaultBadge;
+              });
+
+              return mergedBadges.map((a) => (
                 <AchievementBadge key={a.id} achievement={a} />
-              ))}
-            </div>
-          )}
+              ));
+            })()}
+          </div>
         </section>
 
         {/* Leaderboard */}

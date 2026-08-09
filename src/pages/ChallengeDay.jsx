@@ -1,13 +1,13 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 import SubmissionForm from '../components/SubmissionForm';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../lib/firebase';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 import challengesData from '../data/challenges.json';
-import submissionsData from '../data/submissions.json';
 import {
   ChevronLeft,
   ChevronRight,
@@ -26,9 +26,29 @@ export default function ChallengeDay() {
   const challenge = challengesData.find(c => c.day === day);
   const { user, userData } = useAuth();
   
-  // Later we should fetch real submissions. For now, checking if a real submission exists isn't fully implemented in state,
-  // so we'll mock it based on static data or treat it as pending.
-  const submission = submissionsData.find(s => s.day === day);
+  const [submission, setSubmission] = useState(null);
+  const [loadingSubmission, setLoadingSubmission] = useState(true);
+
+  useEffect(() => {
+    const fetchSubmission = async () => {
+      if (user) {
+        try {
+          const docRef = doc(db, 'users', user.uid, 'submissions', `day-${day}`);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setSubmission(docSnap.data());
+          } else {
+            setSubmission(null);
+          }
+        } catch (err) {
+          console.error("Failed to fetch submission", err);
+        }
+      }
+      setLoadingSubmission(false);
+    };
+    fetchSubmission();
+  }, [day, user]);
+
   const totalDays = 60;
   const progress = (day / totalDays) * 100;
 
@@ -56,7 +76,7 @@ export default function ChallengeDay() {
     missed: { label: 'Missed', icon: XCircle, color: 'red' },
   };
 
-  const status = submission?.status || 'pending';
+  const status = loadingSubmission ? 'pending' : (submission?.status || 'pending');
   const config = statusConfig[status] || statusConfig.pending;
   const StatusIcon = config.icon;
 

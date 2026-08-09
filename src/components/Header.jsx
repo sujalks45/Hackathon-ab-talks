@@ -8,7 +8,7 @@ export default function Header({ showSignIn = true, showBack = false, title }) {
   const location = useLocation();
   const navigate = useNavigate();
   const isLanding = location.pathname === '/';
-  const { user, loginWithGoogle, logout } = useAuth();
+  const { user, userData, loginWithGoogle, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -63,9 +63,9 @@ export default function Header({ showSignIn = true, showBack = false, title }) {
                 style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}
               >
                 <img 
-                  src={user.photoURL || `https://ui-avatars.com/api/?name=${user.email}`} 
+                  src={userData?.avatarUrl || user.photoURL || `https://ui-avatars.com/api/?name=${user.email}`} 
                   alt="Avatar" 
-                  style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid var(--color-border)' }}
+                  style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid var(--color-border)', objectFit: 'cover' }}
                 />
               </button>
               

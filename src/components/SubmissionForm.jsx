@@ -20,15 +20,22 @@ export default function SubmissionForm({ onSubmit, existingSubmission }) {
   const [notes, setNotes] = useState(existingSubmission?.notes || '');
   const [submitted, setSubmitted] = useState(existingSubmission?.status === 'completed');
   const [showConfetti, setShowConfetti] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!githubUrl || !linkedinUrl) return;
     
     setSubmitted(true);
+    setIsEditing(false);
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 3000);
     onSubmit?.({ githubUrl, linkedinUrl, notes });
+  };
+
+  const handleEdit = () => {
+    setSubmitted(false);
+    setIsEditing(true);
   };
 
   const confettiColors = ['#8B5CF6', '#6366F1', '#D946EF', '#10B981', '#F59E0B', '#EF4444'];
@@ -55,7 +62,7 @@ export default function SubmissionForm({ onSubmit, existingSubmission }) {
         </div>
       )}
 
-      {submitted ? (
+      {submitted && !isEditing ? (
         <div className="submission-form__success slide-up">
           <div className="submission-form__success-icon">
             <PartyPopper size={32} />
@@ -72,6 +79,9 @@ export default function SubmissionForm({ onSubmit, existingSubmission }) {
               View Post
             </a>
           </div>
+          <button onClick={handleEdit} className="btn btn--secondary" style={{ marginTop: 'var(--space-4)', margin: 'var(--space-4) auto 0', display: 'flex' }}>
+            Edit Submission
+          </button>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="submission-form__form slide-up">

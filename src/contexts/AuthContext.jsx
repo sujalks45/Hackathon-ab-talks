@@ -37,7 +37,14 @@ export function AuthProvider({ children }) {
             streakShields: 0,
             streakShieldsUsed: 0,
             rank: 0,
-            achievements: []
+            achievements: [
+              { id: 'first-commit', title: 'First Commit', emoji: '🚀', description: 'Submit your first proof of work', earned: false, date: null },
+              { id: 'streak-3', title: '3-Day Streak', emoji: '🔥', description: 'Maintain a 3-day streak', earned: false, date: null },
+              { id: 'streak-7', title: 'Week Warrior', emoji: '⚔️', description: 'Maintain a 7-day streak. Earn a Streak Shield!', earned: false, date: null },
+              { id: 'streak-14', title: 'Two-Week Titan', emoji: '🏆', description: 'Maintain a 14-day streak', earned: false, date: null },
+              { id: 'halfway', title: 'Halfway Hero', emoji: '🎯', description: 'Complete 30 days of the challenge', earned: false, date: null },
+              { id: 'finisher', title: 'Challenge Champion', emoji: '👑', description: 'Complete all 60 days!', earned: false, date: null }
+            ]
           };
           await setDoc(userRef, newUser);
           setUserData(newUser);
