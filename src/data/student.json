@@ -1,0 +1,127 @@
+{
+  "name": "Priya Sharma",
+  "avatar": "PS",
+  "email": "priya.sharma@university.edu",
+  "college": "IIT Delhi",
+  "track": "Software Engineering",
+  "joinedDate": "2026-06-15",
+  "currentDay": 12,
+  "currentStreak": 8,
+  "longestStreak": 8,
+  "totalCompleted": 11,
+  "totalDays": 60,
+  "streakShields": 1,
+  "streakShieldsUsed": 0,
+  "rank": 42,
+  "totalParticipants": 1247,
+  "achievements": [
+    {
+      "id": "first-commit",
+      "title": "First Commit",
+      "emoji": "\ud83d\ude80",
+      "description": "Submitted your first proof of work",
+      "earned": true,
+      "date": "2026-06-15"
+    },
+    {
+      "id": "streak-3",
+      "title": "3-Day Streak",
+      "emoji": "\ud83d\udd25",
+      "description": "Maintained a 3-day streak",
+      "earned": true,
+      "date": "2026-06-18"
+    },
+    {
+      "id": "streak-7",
+      "title": "Week Warrior",
+      "emoji": "\u2694\ufe0f",
+      "description": "Maintained a 7-day streak. Earned a Streak Shield!",
+      "earned": true,
+      "date": "2026-06-22"
+    },
+    {
+      "id": "streak-14",
+      "title": "Two-Week Titan",
+      "emoji": "\ud83c\udfc6",
+      "description": "Maintained a 14-day streak",
+      "earned": false,
+      "date": null
+    },
+    {
+      "id": "halfway",
+      "title": "Halfway Hero",
+      "emoji": "\ud83c\udfaf",
+      "description": "Completed 30 days of the challenge",
+      "earned": false,
+      "date": null
+    },
+    {
+      "id": "finisher",
+      "title": "Challenge Champion",
+      "emoji": "\ud83d\udc51",
+      "description": "Completed all 60 days!",
+      "earned": false,
+      "date": null
+    }
+  ],
+  "weeklyActivity": [
+    {
+      "day": "Mon",
+      "date": "2026-06-23",
+      "status": "completed"
+    },
+    {
+      "day": "Tue",
+      "date": "2026-06-24",
+      "status": "completed"
+    },
+    {
+      "day": "Wed",
+      "date": "2026-06-25",
+      "status": "completed"
+    },
+    {
+      "day": "Thu",
+      "date": "2026-06-26",
+      "status": "pending"
+    },
+    {
+      "day": "Fri",
+      "date": "2026-06-27",
+      "status": "upcoming"
+    },
+    {
+      "day": "Sat",
+      "date": "2026-06-28",
+      "status": "upcoming"
+    },
+    {
+      "day": "Sun",
+      "date": "2026-06-29",
+      "status": "upcoming"
+    }
+  ],
+  "leaderboard": [
+    {
+      "rank": 1,
+      "name": "Arjun Patel",
+      "avatar": "AP",
+      "streak": 12,
+      "completed": 12
+    },
+    {
+      "rank": 2,
+      "name": "Neha Gupta",
+      "avatar": "NG",
+      "streak": 11,
+      "completed": 12
+    },
+    {
+      "rank": 3,
+      "name": "Rahul Singh",
+      "avatar": "RS",
+      "streak": 11,
+      "completed": 11
+    }
+  ]
+}

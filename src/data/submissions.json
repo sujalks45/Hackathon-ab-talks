@@ -1,0 +1,98 @@
+[
+  {
+    "day": 1,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/abc123",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day1",
+    "submittedAt": "2026-06-15T22:30:00Z",
+    "notes": "Set up my dev environment and pushed my first commit!"
+  },
+  {
+    "day": 2,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/def456",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day2",
+    "submittedAt": "2026-06-16T23:15:00Z",
+    "notes": "Built a personal card component with HTML & CSS"
+  },
+  {
+    "day": 3,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/ghi789",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day3",
+    "submittedAt": "2026-06-17T21:45:00Z",
+    "notes": "Created an interactive counter with vanilla JS"
+  },
+  {
+    "day": 4,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/jkl012",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day4",
+    "submittedAt": "2026-06-18T22:00:00Z",
+    "notes": "Dynamic todo list with add, delete, and filter"
+  },
+  {
+    "day": 5,
+    "status": "missed",
+    "githubUrl": null,
+    "linkedinUrl": null,
+    "submittedAt": null,
+    "notes": null
+  },
+  {
+    "day": 6,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/mno345",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day6",
+    "submittedAt": "2026-06-20T23:50:00Z",
+    "notes": "CSS animations are so fun! Built a loading spinner"
+  },
+  {
+    "day": 7,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/pqr678",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day7",
+    "submittedAt": "2026-06-21T20:30:00Z",
+    "notes": "Learned branching and created my first PR"
+  },
+  {
+    "day": 8,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/stu901",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day8",
+    "submittedAt": "2026-06-22T21:15:00Z",
+    "notes": "React Hello World is up and running!"
+  },
+  {
+    "day": 9,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/vwx234",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day9",
+    "submittedAt": "2026-06-23T22:45:00Z",
+    "notes": "Built a reusable profile card component"
+  },
+  {
+    "day": 10,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/yza567",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day10",
+    "submittedAt": "2026-06-24T23:00:00Z",
+    "notes": "Quiz app with score tracking"
+  },
+  {
+    "day": 11,
+    "status": "completed",
+    "githubUrl": "https://github.com/priya-sharma/60days-challenge/commit/bcd890",
+    "linkedinUrl": "https://linkedin.com/posts/priya-sharma-day11",
+    "submittedAt": "2026-06-25T22:30:00Z",
+    "notes": "Fetched real data from a public API!"
+  },
+  {
+    "day": 12,
+    "status": "pending",
+    "githubUrl": null,
+    "linkedinUrl": null,
+    "submittedAt": null,
+    "notes": null
+  }
+]
