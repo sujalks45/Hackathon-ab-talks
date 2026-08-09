@@ -1,7 +1,11 @@
 import { NavLink } from 'react-router-dom';
-import { Home, BarChart3, Plus, User } from 'lucide-react';
+import { Home, LayoutList, Plus, User } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function BottomNav() {
+  const { userData } = useAuth();
+  const currentDay = userData?.currentDay || 1;
+
   return (
     <nav className="bottom-nav">
       <NavLink to="/dashboard" end className={({ isActive }) => `bottom-nav__item ${isActive ? 'bottom-nav__item--active' : ''}`}>
@@ -9,16 +13,16 @@ export default function BottomNav() {
         <span>Home</span>
       </NavLink>
       <NavLink to="/dashboard" className={({ isActive }) => `bottom-nav__item ${isActive ? '' : ''}`}>
-        <BarChart3 size={20} />
-        <span>Progress</span>
+        <LayoutList size={20} />
+        <span>Tasks</span>
       </NavLink>
-      <NavLink to="/day/12" className={({ isActive }) => `bottom-nav__item bottom-nav__item--submit ${isActive ? 'bottom-nav__item--active' : ''}`}>
+      <NavLink to={`/day/${currentDay}`} className={({ isActive }) => `bottom-nav__item bottom-nav__item--submit ${isActive ? 'bottom-nav__item--active' : ''}`}>
         <div className="bottom-nav__submit-btn">
           <Plus size={22} strokeWidth={2.5} />
         </div>
         <span>Submit</span>
       </NavLink>
-      <NavLink to="/dashboard" className="bottom-nav__item">
+      <NavLink to="/profile" className={({ isActive }) => `bottom-nav__item ${isActive ? 'bottom-nav__item--active' : ''}`}>
         <User size={20} />
         <span>Profile</span>
       </NavLink>
