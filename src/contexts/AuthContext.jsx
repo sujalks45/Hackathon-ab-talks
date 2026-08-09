@@ -57,8 +57,14 @@ export function AuthProvider({ children }) {
       await signInWithPopup(auth, googleProvider);
     } catch (err) {
       console.error('Login failed', err);
-      if (err.code !== 'auth/popup-closed-by-user') {
-        toast.error('Login popup blocked or failed. Please try again.');
+      if (err.code === 'auth/popup-blocked') {
+        toast.loading('Popup blocked by browser. Redirecting securely...', { duration: 3000 });
+        // Fallback to redirect if popup is blocked
+        import('firebase/auth').then(({ signInWithRedirect }) => {
+          signInWithRedirect(auth, googleProvider);
+        });
+      } else if (err.code !== 'auth/popup-closed-by-user') {
+        toast.error('Login failed. Please try again.');
       }
     }
   };
