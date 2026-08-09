@@ -9,9 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "firebase": "^12.17.1",
     "lucide-react": "^1.30.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-firebase-hooks": "^5.1.1",
+    "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
