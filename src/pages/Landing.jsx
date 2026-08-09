@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { useAuth } from '../contexts/AuthContext';
+import toast from 'react-hot-toast';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -98,6 +100,23 @@ const steps = [
 
 export default function Landing() {
   const [testimonialIdx, setTestimonialIdx] = useState(0);
+  const { user, loginWithGoogle } = useAuth();
+  const navigate = useNavigate();
+
+  const handleStart = async (e) => {
+    e.preventDefault();
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      try {
+        await loginWithGoogle();
+        toast.success('Welcome to ABTalks! 👋');
+        navigate('/dashboard');
+      } catch (err) {
+        toast.error('Failed to log in');
+      }
+    }
+  };
 
   return (
     <div className="landing">
@@ -120,10 +139,10 @@ export default function Landing() {
           accelerate their careers through visible proof of work.
         </p>
         <div className="landing__hero-actions">
-          <Link to="/dashboard" className="btn btn--primary btn--large btn--pulse">
+          <button onClick={handleStart} className="btn btn--primary btn--large btn--pulse">
             Start the 60-Day Challenge
             <ArrowRight size={18} />
-          </Link>
+          </button>
         </div>
         <div className="landing__hero-social-proof">
           <div className="landing__avatars">
@@ -143,7 +162,7 @@ export default function Landing() {
       <section className="landing__tracks container section slide-up stagger-1">
         <div className="landing__tracks-grid">
           {tracks.map((track, i) => (
-            <Link to="/dashboard" key={i} className={`landing__track-card glass-card`} data-color={track.color}>
+            <button onClick={handleStart} key={i} className={`landing__track-card glass-card`} data-color={track.color} style={{textAlign: 'left'}}>
               <div className={`landing__track-glow landing__track-glow--${track.color}`} />
               <div className="landing__track-header">
                 <span className={`badge badge--${track.color}`}>{track.status}</span>
@@ -160,7 +179,7 @@ export default function Landing() {
               <span className={`landing__track-cta landing__track-cta--${track.color}`}>
                 {track.cta}
               </span>
-            </Link>
+            </button>
           ))}
         </div>
       </section>
@@ -267,10 +286,10 @@ export default function Landing() {
           <Flame size={32} className="landing__final-flame" />
           <h2>Ready to build your streak?</h2>
           <p>60 days. One task a day. Build the habit. Get noticed.</p>
-          <Link to="/dashboard" className="btn btn--primary btn--large btn--pulse">
+          <button onClick={handleStart} className="btn btn--primary btn--large btn--pulse">
             Start the Challenge
             <ArrowRight size={18} />
-          </Link>
+          </button>
         </div>
       </section>
 

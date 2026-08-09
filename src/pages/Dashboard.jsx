@@ -5,20 +5,34 @@ import StreakCard from '../components/StreakCard';
 import ProgressRing from '../components/ProgressRing';
 import TaskCard from '../components/TaskCard';
 import AchievementBadge from '../components/AchievementBadge';
-import studentData from '../data/student.json';
+import LoadingScreen from '../components/LoadingScreen';
+import { useAuth } from '../contexts/AuthContext';
 import challengesData from '../data/challenges.json';
 import submissionsData from '../data/submissions.json';
-import { Award, ChevronRight, Shield, AlertTriangle } from 'lucide-react';
+import { Award, ChevronRight, Shield, AlertTriangle, Sparkles } from 'lucide-react';
 
 export default function Dashboard() {
-  const student = studentData;
+  const { userData } = useAuth();
+  
+  if (!userData) {
+    return <LoadingScreen message="Loading your dashboard..." />;
+  }
+
+  const student = userData;
+  // TODO: Fetch real submissions from Firestore in the future
   const todayChallenge = challengesData.find(c => c.day === student.currentDay);
   const todaySubmission = submissionsData.find(s => s.day === student.currentDay);
-  const progress = Math.round((student.totalCompleted / student.totalDays) * 100);
-  const earnedAchievements = student.achievements.filter(a => a.earned);
-  const nextAchievement = student.achievements.find(a => !a.earned);
+  const progress = Math.round((student.totalCompleted / student.totalDays) * 100) || 0;
+  const earnedAchievements = student.achievements?.filter(a => a.earned) || [];
   const hasMissedDay = submissionsData.some(s => s.status === 'missed');
   const isFirstDay = student.currentDay === 1 && student.currentStreak === 0;
+
+  // Placeholder leaderboard until we fetch real users from Firestore
+  const leaderboard = [
+    { rank: 1, name: "Arjun Patel", avatar: "AP", streak: 12, completed: 12 },
+    { rank: 2, name: "Neha Gupta", avatar: "NG", streak: 11, completed: 12 },
+    { rank: 3, name: "Rahul Singh", avatar: "RS", streak: 11, completed: 11 }
+  ];
 
   return (
     <div className="dashboard page">
@@ -74,7 +88,15 @@ export default function Dashboard() {
 
         {/* Streak Card */}
         <section className="slide-up stagger-1">
-          <StreakCard student={student} />
+          <StreakCard student={{...student, weeklyActivity: [
+            { day: "Mon", status: "completed" },
+            { day: "Tue", status: "completed" },
+            { day: "Wed", status: "completed" },
+            { day: "Thu", status: "pending" },
+            { day: "Fri", status: "upcoming" },
+            { day: "Sat", status: "upcoming" },
+            { day: "Sun", status: "upcoming" }
+          ]}} />
         </section>
 
         {/* Today's Task */}
@@ -109,7 +131,7 @@ export default function Dashboard() {
               <span>Days Left</span>
             </div>
             <div className="dashboard__progress-stat">
-              <strong>#{student.rank}</strong>
+              <strong>#{student.rank || 0}</strong>
               <span>Your Rank</span>
             </div>
           </div>
@@ -121,13 +143,22 @@ export default function Dashboard() {
             <h2 className="dashboard__section-title">
               <Award size={18} /> Achievements
             </h2>
-            <span className="dashboard__section-count">{earnedAchievements.length}/{student.achievements.length}</span>
+            <span className="dashboard__section-count">{earnedAchievements.length}/{student.achievements?.length || 0}</span>
           </div>
-          <div className="dashboard__achievements">
-            {student.achievements.map((a) => (
-              <AchievementBadge key={a.id} achievement={a} />
-            ))}
-          </div>
+          {(!student.achievements || student.achievements.length === 0) ? (
+            <div className="glass-card glass-card--static" style={{ padding: 'var(--space-6)', textAlign: 'center' }}>
+              <Sparkles size={32} color="var(--color-text-muted)" style={{ margin: '0 auto var(--space-3)' }} />
+              <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--text-sm)' }}>
+                Complete your first 3 days to unlock your first badge!
+              </p>
+            </div>
+          ) : (
+            <div className="dashboard__achievements">
+              {student.achievements.map((a) => (
+                <AchievementBadge key={a.id} achievement={a} />
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Leaderboard */}
@@ -136,7 +167,7 @@ export default function Dashboard() {
             <h2 className="dashboard__section-title">🏆 Leaderboard</h2>
           </div>
           <div className="dashboard__leaderboard glass-card glass-card--static">
-            {student.leaderboard.map((entry, i) => (
+            {leaderboard.map((entry, i) => (
               <div key={i} className="dashboard__lb-row">
                 <div className="dashboard__lb-rank">
                   {entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : '🥉'}
@@ -150,7 +181,7 @@ export default function Dashboard() {
               </div>
             ))}
             <div className="dashboard__lb-row dashboard__lb-row--self">
-              <div className="dashboard__lb-rank">#{student.rank}</div>
+              <div className="dashboard__lb-rank">#{student.rank || 0}</div>
               <div className="dashboard__lb-avatar dashboard__lb-avatar--self">{student.avatar}</div>
               <div className="dashboard__lb-info">
                 <span className="dashboard__lb-name">You</span>

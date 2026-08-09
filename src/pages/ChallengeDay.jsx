@@ -2,6 +2,10 @@ import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 import SubmissionForm from '../components/SubmissionForm';
+import { useAuth } from '../contexts/AuthContext';
+import { db } from '../lib/firebase';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import toast from 'react-hot-toast';
 import challengesData from '../data/challenges.json';
 import submissionsData from '../data/submissions.json';
 import {
@@ -20,6 +24,10 @@ export default function ChallengeDay() {
   const { dayNumber } = useParams();
   const day = parseInt(dayNumber, 10);
   const challenge = challengesData.find(c => c.day === day);
+  const { user, userData } = useAuth();
+  
+  // Later we should fetch real submissions. For now, checking if a real submission exists isn't fully implemented in state,
+  // so we'll mock it based on static data or treat it as pending.
   const submission = submissionsData.find(s => s.day === day);
   const totalDays = 60;
   const progress = (day / totalDays) * 100;
@@ -56,6 +64,32 @@ export default function ChallengeDay() {
     Easy: 'badge--emerald',
     Medium: 'badge--amber',
     Hard: 'badge--red',
+  };
+
+  const handleSubmission = async (data) => {
+    if (!user) return;
+    try {
+      const submissionRef = doc(db, 'users', user.uid, 'submissions', `day-${day}`);
+      await setDoc(submissionRef, {
+        day,
+        ...data,
+        status: 'completed',
+        submittedAt: new Date().toISOString()
+      });
+      
+      // Update user streak and completion
+      if (userData) {
+        const userRef = doc(db, 'users', user.uid);
+        await updateDoc(userRef, {
+          totalCompleted: (userData.totalCompleted || 0) + 1,
+          currentStreak: (userData.currentStreak || 0) + 1
+        });
+      }
+      toast.success('Proof of Work submitted! 🎉');
+    } catch (err) {
+      console.error('Error submitting proof of work', err);
+      toast.error('Failed to submit proof of work');
+    }
   };
 
   return (
@@ -166,9 +200,7 @@ export default function ChallengeDay() {
           <h2 className="cd__sub-title">Submit Proof of Work</h2>
           <SubmissionForm
             existingSubmission={submission}
-            onSubmit={(data) => {
-              console.log('Submitted:', data);
-            }}
+            onSubmit={handleSubmission}
           />
         </section>
 
