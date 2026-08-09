@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { useAuth } from '../contexts/AuthContext';
@@ -103,6 +103,12 @@ export default function Landing() {
   const { user, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
+
   const handleStart = async (e) => {
     e.preventDefault();
     if (user) {
@@ -111,7 +117,7 @@ export default function Landing() {
       try {
         await loginWithGoogle();
         toast.success('Welcome to ABTalks! 👋');
-        navigate('/dashboard');
+        // We don't navigate here directly for redirect flow, the useEffect handles it
       } catch (err) {
         toast.error('Failed to log in');
       }
