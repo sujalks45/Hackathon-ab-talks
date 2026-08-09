@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
         await getRedirectResult(auth);
       } catch (err) {
         console.error('Redirect result error:', err);
+        toast.error('Redirect Login Error: ' + err.message, { duration: 5000 });
       }
     };
     handleRedirect();
