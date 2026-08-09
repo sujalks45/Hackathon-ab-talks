@@ -1,21 +1,30 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, googleProvider } from '../lib/firebase';
-import { signInWithPopup, signOut } from 'firebase/auth';
+import { auth, db, googleProvider } from '../lib/firebase';
+import { signInWithRedirect, signOut, getRedirectResult, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../lib/firebase';
 
 const AuthContext = createContext({});
 
 export function AuthProvider({ children }) {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // When user logs in, fetch or create their Firestore profile
+  // Handle redirect result and auth state
   useEffect(() => {
-    if (user) {
-      const fetchUserData = async () => {
-        const userRef = doc(db, 'users', user.uid);
+    const handleRedirect = async () => {
+      try {
+        await getRedirectResult(auth);
+      } catch (err) {
+        console.error('Redirect error', err);
+      }
+    };
+    handleRedirect();
+
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        const userRef = doc(db, 'users', currentUser.uid);
         const userSnap = await getDoc(userRef);
 
         if (userSnap.exists()) {
@@ -23,9 +32,9 @@ export function AuthProvider({ children }) {
         } else {
           // Initialize new user
           const newUser = {
-            name: user.displayName || 'New Builder',
-            email: user.email,
-            avatar: user.displayName ? user.displayName.substring(0, 2).toUpperCase() : 'AB',
+            name: currentUser.displayName || 'New Builder',
+            email: currentUser.email,
+            avatar: currentUser.displayName ? currentUser.displayName.substring(0, 2).toUpperCase() : 'AB',
             college: 'Not Set',
             track: 'Software Engineering',
             joinedDate: new Date().toISOString(),
@@ -59,7 +68,7 @@ export function AuthProvider({ children }) {
 
   const loginWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithRedirect(auth, googleProvider);
     } catch (err) {
       console.error('Login failed', err);
     }
